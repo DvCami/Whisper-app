@@ -14,9 +14,23 @@ app.resizable(False,False)
 
 # Cuerpo de la ventana
 
-frame_drop = tk.Frame(master = app, width=300, height= 300, padx=10, pady= 10)
-frame_drop.pack()
-frame_drop.config(background = "lightgreen") # Fondo del Frame en blanco
+# Configuracion de la ventana
+app.grid_columnconfigure(0, weight = 1) # Configuracion de la columna de la izquierda
+app.grid_columnconfigure(1, weight = 3) # Configuracion de la columna de la derecha
+
+# Configuracion del frame
+style = ttk.Style() # Creacion de estilo para el frame
+style.configure("TFrame",
+                background="white",
+                relief = 'solid',
+                borderwidth = 2,
+                borderradius = 15) # Configuracion del estilo Frame_drop
+
+# Frame del drop
+frame_drop = ttk.Frame(master = app, width=300, height= 300, style = 'TFrame')
+frame_drop.grid(row= 0, column=3, sticky = 'nw', padx=10, pady=10) # Posicion del frame
+
+frame_drop.grid_propagate(False) #Evitar que el frame se expanda
 
 app.mainloop()
 
