@@ -1,2 +1,3 @@
 whisper
 pydub
+ttkbootstrap
