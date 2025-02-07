@@ -3,6 +3,9 @@ from tkinter import ttk
 import ttkbootstrap as ttk
 from tkinterdnd2 import TkinterDnD, DND_FILES
 
+# Colores 
+backgrond = "#424242"
+
 #Funciones
 
 # Función para crear un frame con bordes redondeados
@@ -29,15 +32,26 @@ app.resizable(False,False)
 # Cuerpo de la ventana
 
 # Configuracion de la ventana
-app.grid_columnconfigure(0, weight = 1) # Configuracion de la columna de la izquierda
-app.grid_columnconfigure(1, weight = 3) # Configuracion de la columna de la derecha
+app.grid_columnconfigure(1, weight = 1) # Configuracion de la columna de la izquierda
+app.grid_columnconfigure(2, weight = 1)# Configuracion de la columna de la derecha
+app.grid_columnconfigure(3, weight = 1)
+app.grid_rowconfigure(1, weight = 1)
+app.grid_rowconfigure(2, weight = 1)
+app.grid_rowconfigure(3, weight = 1)
 
 
 # Frame del drop
-frame_drop = create_rounded_frame(master = app, width=300, height= 300, bg='white')
-frame_drop.grid(row= 0, column=3, sticky = 'nw', padx=10, pady=10) # Posicion del frame
+frame_drop = create_rounded_frame(master = app, width=300, height= 250, bg=backgrond)
+frame_drop.grid(row= 0, column=4, sticky = 'nsew', padx=10, pady=10) # Posicion del frame
 
 frame_drop.grid_propagate(False) #Evitar que el frame se expanda
+
+# Frame para elegior
+
+frame_chose = create_rounded_frame(master = app, width=300, height= 410, bg = backgrond)
+frame_chose.grid(row = 1, column = 4,rowspan=2, sticky="nsew", padx = 10, pady = 10) # Posicion del frame model
+
+frame_chose.grid_propagate(False)
 
 app.mainloop()
 
