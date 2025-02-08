@@ -1,7 +1,10 @@
 import tkinter as tk
+from tkinter import PhotoImage
+from PIL import Image, ImageTk
 from tkinter import ttk
 import ttkbootstrap as ttk
 from tkinterdnd2 import TkinterDnD, DND_FILES
+
 
 
 """
@@ -15,6 +18,8 @@ from tkinterdnd2 import TkinterDnD, DND_FILES
     7-Buscar librerias que ayuden a la depuracion y salida del codigo
     
 """
+
+
 
 
 
@@ -46,6 +51,15 @@ app.title("Transcripcion beta, DvCami")
 app.geometry("1300x700+256+256")
 app.resizable(False,False)
 
+# Creacion de imagenes
+
+# Configuracion de imagenes 
+img_play = Image.open("assets/imgs/play.png")
+img_pause = Image.open( "assets/imgs/pause.png")
+
+play = ImageTk.PhotoImage(img_play)
+pause = ImageTk.PhotoImage(img_pause)
+
 # Cuerpo de la ventana
 
 # Configuracion de la ventana
@@ -75,6 +89,11 @@ frame_chose.grid_propagate(False) # Evitar que el frame se expanda
 
 frame_audio = create_rounded_frame(master= app, width= 950, height= 200, bg=frame_audio_background)
 frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pady = 10 )
+
+# Posicionar el boton play
+
+btn_play_and_pause = tk.Button(master= frame_audio, image= play, borderwidth = 0, highlightbackground= frame_audio_background, relief= "flat" )
+btn_play_and_pause.pack(pady= 20) 
 
 
 app.mainloop()

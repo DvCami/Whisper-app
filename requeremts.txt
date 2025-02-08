@@ -2,3 +2,4 @@ whisper
 pydub
 ttkbootstrap
 tkinterdnd2
+fillow
