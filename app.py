@@ -94,12 +94,6 @@ app.resizable(False,False)
 
 # Creacion de imagenes
 
-# # Configuracion de imagenes 
-# img_play = Image.open("assets/imgs/play.png")
-# img_pause = Image.open( "assets/imgs/pause.png")
-
-# play = ImageTk.PhotoImage(img_play)
-# pause = ImageTk.PhotoImage(img_pause)
 
 # Cuerpo de la ventana
 
@@ -133,8 +127,6 @@ frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pad
 
 # Posicionar el boton play
 
-# btn_play_and_pause = tk.Button(master= frame_audio, image= pause, borderwidth = 0, highlightbackground= frame_audio_background, relief= "flat", background=frame_audio_background )
-# btn_play_and_pause.pack(pady= 20) 
 
 
 app.mainloop()
