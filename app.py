@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
+import math
 from tkinter import ttk
 import ttkbootstrap as ttk
 from tkinterdnd2 import TkinterDnD, DND_FILES
@@ -42,6 +43,46 @@ def create_rounded_frame(master, width, height, radius=20, bg="lightblue"):
     canvas.grid(row=0, column=0, padx=10, pady=10)
     return canvas
 
+def rotate_point(x, y, cx, cy, angle):
+    """ Rota un punto (x, y) alrededor de (cx, cy) en un ángulo dado (en grados). """
+    rad = math.radians(angle)  # Convertir grados a radianes
+    x_new = cx + (x - cx) * math.cos(rad) - (y - cy) * math.sin(rad)
+    y_new = cy + (x - cx) * math.sin(rad) + (y - cy) * math.cos(rad)
+    return x_new, y_new
+
+def draw_rounded_triangle(master, x, y, size, radius, background, angle=0, fill_color="black"):
+    """
+    Dibuja un triángulo con bordes redondeados en un canvas.
+    x, y -> Coordenadas del centro del triángulo.
+    size -> Tamaño del triángulo.
+    radius -> Radio de las esquinas redondeadas.
+    angle -> Ángulo de rotación en grados.
+    fill_color -> Color del triángulo.
+    """
+    canvas_size = size + 2 * radius  
+    canvas = tk.Canvas(master, width=canvas_size, height=canvas_size, bg = background, highlightthickness=0)
+    canvas.grid(row = 0, column = 0, padx = 10, pady = 10)
+
+    # Centro de rotación
+    cx, cy = canvas_size // 2, canvas_size // 2
+
+    # Puntos iniciales (sin rotación)
+    p1 = (cx, cy - size // 2)  # Punto superior
+    p2 = (cx - size // 2, cy + size // 2)  # Punto inferior izquierdo
+    p3 = (cx + size // 2, cy + size // 2)  # Punto inferior derecho
+
+    # Aplicar rotación a cada punto
+    p1 = rotate_point(*p1, cx, cy, angle)
+    p2 = rotate_point(*p2, cx, cy, angle)
+    p3 = rotate_point(*p3, cx, cy, angle)
+
+    # Dibujar triángulo base
+    canvas.create_polygon(p1, p2, p3, fill=fill_color, outline="", smooth=True)
+
+
+    return canvas 
+
+
 app = ttk.Window(themename="darkly")
 
 
@@ -53,12 +94,12 @@ app.resizable(False,False)
 
 # Creacion de imagenes
 
-# Configuracion de imagenes 
-img_play = Image.open("assets/imgs/play.png")
-img_pause = Image.open( "assets/imgs/pause.png")
+# # Configuracion de imagenes 
+# img_play = Image.open("assets/imgs/play.png")
+# img_pause = Image.open( "assets/imgs/pause.png")
 
-play = ImageTk.PhotoImage(img_play)
-pause = ImageTk.PhotoImage(img_pause)
+# play = ImageTk.PhotoImage(img_play)
+# pause = ImageTk.PhotoImage(img_pause)
 
 # Cuerpo de la ventana
 
@@ -92,8 +133,8 @@ frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pad
 
 # Posicionar el boton play
 
-btn_play_and_pause = tk.Button(master= frame_audio, image= pause, borderwidth = 0, highlightbackground= frame_audio_background, relief= "flat", background=frame_audio_background )
-btn_play_and_pause.pack(pady= 20) 
+# btn_play_and_pause = tk.Button(master= frame_audio, image= pause, borderwidth = 0, highlightbackground= frame_audio_background, relief= "flat", background=frame_audio_background )
+# btn_play_and_pause.pack(pady= 20) 
 
 
 app.mainloop()
