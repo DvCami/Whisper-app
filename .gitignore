@@ -1,3 +1,6 @@
 # Ignorando la carpeta venv
 
 venv/
+
+# Ignorar el archivo de prueba
+prueba.py
