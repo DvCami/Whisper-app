@@ -25,8 +25,8 @@ from tkinterdnd2 import TkinterDnD, DND_FILES
 
 
 # Colores 
-frame_background = "#424242"
-frame_audio_background = "#757575"
+primary_color = "#424242"
+secundary_color = "#757575"
 
 
 #Funciones
@@ -50,7 +50,7 @@ def rotate_point(x, y, cx, cy, angle):
     y_new = cy + (x - cx) * math.sin(rad) + (y - cy) * math.cos(rad)
     return x_new, y_new
 
-def draw_rounded_triangle(master, x, y, size, radius, background, angle=0, fill_color="black"):
+def draw_rounded_triangle(canvas, x, y, size, radius,   angle=0,  fill_color="black", bg = "lightblue", padx = 0, pady = 0 ):
     """
     Dibuja un triángulo con bordes redondeados en un canvas.
     x, y -> Coordenadas del centro del triángulo.
@@ -59,12 +59,10 @@ def draw_rounded_triangle(master, x, y, size, radius, background, angle=0, fill_
     angle -> Ángulo de rotación en grados.
     fill_color -> Color del triángulo.
     """
-    canvas_size = size + 2 * radius  
-    canvas = tk.Canvas(master, width=canvas_size, height=canvas_size, bg = background, highlightthickness=0)
-    canvas.grid(row = 0, column = 0, padx = 10, pady = 10)
+    
 
     # Centro de rotación
-    cx, cy = canvas_size // 2, canvas_size // 2
+    cx, cy = size // 2, size // 2
 
     # Puntos iniciales (sin rotación)
     p1 = (cx, cy - size // 2)  # Punto superior
@@ -75,9 +73,13 @@ def draw_rounded_triangle(master, x, y, size, radius, background, angle=0, fill_
     p1 = rotate_point(*p1, cx, cy, angle)
     p2 = rotate_point(*p2, cx, cy, angle)
     p3 = rotate_point(*p3, cx, cy, angle)
+    
+    p1 = (p1[0] + padx, p1[1] + pady)
+    p2 = (p2[0] + padx, p2[1] + pady)
+    p3 = (p3[0] + padx, p3[1] + pady)
 
     # Dibujar triángulo base
-    canvas.create_polygon(p1, p2, p3, fill=fill_color, outline="", smooth=True)
+    canvas.create_polygon(p1, p2, p3, fill=fill_color, outline=fill_color, smooth=True)
 
 
     return canvas 
@@ -107,14 +109,14 @@ app.grid_rowconfigure(3, weight = 1)
 
 
 # Frame del drop
-frame_drop = create_rounded_frame(master = app, width=300, height= 250, bg=frame_background)
+frame_drop = create_rounded_frame(master = app, width=300, height= 250, bg=primary_color)
 frame_drop.grid(row= 0, column=4, sticky = 'nsew', padx=10, pady=10) # Posicion del frame
 
 frame_drop.grid_propagate(False) # Evitar que el frame se expanda
 
 # Frame para elegir
 
-frame_chose = create_rounded_frame(master = app, width=300, height= 410, bg = frame_background)
+frame_chose = create_rounded_frame(master = app, width=300, height= 410, bg = primary_color)
 frame_chose.grid(row = 1, column = 4,rowspan=2, sticky="nsew", padx = 10, pady = 10) # Posicion del frame model
 
 frame_chose.grid_propagate(False) # Evitar que el frame se expanda 
@@ -122,11 +124,12 @@ frame_chose.grid_propagate(False) # Evitar que el frame se expanda
 
 # Frame de UI audio
 
-frame_audio = create_rounded_frame(master= app, width= 950, height= 200, bg=frame_audio_background)
+frame_audio = create_rounded_frame(master= app, width= 950, height= 200, bg=secundary_color)
 frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pady = 10 )
 
 # Posicionar el boton play
 
+boton_play = draw_rounded_triangle(canvas = frame_audio, x=30, y=30, size=60, radius=1, angle=90, bg=secundary_color, fill_color= primary_color, padx= 105.5, pady= 70)
 
 
 app.mainloop()
