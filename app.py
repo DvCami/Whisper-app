@@ -3,8 +3,25 @@ from tkinter import ttk
 import ttkbootstrap as ttk
 from tkinterdnd2 import TkinterDnD, DND_FILES
 
+
+"""
+    Se necesita un boton de play centrado, que luego a su derecha este la linea de reproduccion y despues al final este los tiempos
+    ademas de que abajo este el boton para transcribir y que cambie a un boton de carga hasta que termine de procesar el audio, luego en ese momento debe
+    1- verificar si el audio es compatible o si lo que pasa es un audio
+    2- Comprimir el audio para poder manipularlo mejor
+    3-QUitar los momentos de silencio
+    4- Utilizar wisper
+    6-pasar el archivo transcrito
+    7-Buscar librerias que ayuden a la depuracion y salida del codigo
+    
+"""
+
+
+
 # Colores 
-backgrond = "#424242"
+frame_background = "#424242"
+frame_audio_background = "#757575"
+
 
 #Funciones
 
@@ -32,8 +49,8 @@ app.resizable(False,False)
 # Cuerpo de la ventana
 
 # Configuracion de la ventana
-app.grid_columnconfigure(1, weight = 1) # Configuracion de la columna de la izquierda
-app.grid_columnconfigure(2, weight = 1)# Configuracion de la columna de la derecha
+app.grid_columnconfigure(1, weight = 1) 
+app.grid_columnconfigure(2, weight = 1)
 app.grid_columnconfigure(3, weight = 1)
 app.grid_rowconfigure(1, weight = 1)
 app.grid_rowconfigure(2, weight = 1)
@@ -41,17 +58,24 @@ app.grid_rowconfigure(3, weight = 1)
 
 
 # Frame del drop
-frame_drop = create_rounded_frame(master = app, width=300, height= 250, bg=backgrond)
+frame_drop = create_rounded_frame(master = app, width=300, height= 250, bg=frame_background)
 frame_drop.grid(row= 0, column=4, sticky = 'nsew', padx=10, pady=10) # Posicion del frame
 
-frame_drop.grid_propagate(False) #Evitar que el frame se expanda
+frame_drop.grid_propagate(False) # Evitar que el frame se expanda
 
-# Frame para elegior
+# Frame para elegir
 
-frame_chose = create_rounded_frame(master = app, width=300, height= 410, bg = backgrond)
+frame_chose = create_rounded_frame(master = app, width=300, height= 410, bg = frame_background)
 frame_chose.grid(row = 1, column = 4,rowspan=2, sticky="nsew", padx = 10, pady = 10) # Posicion del frame model
 
-frame_chose.grid_propagate(False)
+frame_chose.grid_propagate(False) # Evitar que el frame se expanda 
+
+
+# Frame de UI audio
+
+frame_audio = create_rounded_frame(master= app, width= 950, height= 200, bg=frame_audio_background)
+frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pady = 10 )
+
 
 app.mainloop()
 
