@@ -50,7 +50,7 @@ def rotate_point(x, y, cx, cy, angle):
     y_new = cy + (x - cx) * math.sin(rad) + (y - cy) * math.cos(rad)
     return x_new, y_new
 
-def draw_rounded_triangle(canvas, size,   angle=0,  fill_color="black", bg = "lightblue", padx = 0, pady = 0 ):
+def draw_rounded_triangle(canvas, size,   angle=0,  fill_color="black", bg = "lightblue", ):
     """
     Dibuja un triángulo con bordes redondeados en un canvas.
     x, y -> Coordenadas del centro del triángulo.
@@ -74,9 +74,9 @@ def draw_rounded_triangle(canvas, size,   angle=0,  fill_color="black", bg = "li
     p2 = rotate_point(*p2, cx, cy, angle)
     p3 = rotate_point(*p3, cx, cy, angle)
     
-    p1 = (p1[0] + padx, p1[1] + pady)
-    p2 = (p2[0] + padx, p2[1] + pady)
-    p3 = (p3[0] + padx, p3[1] + pady)
+    p1 = (p1[0]  ,p1[1] )
+    p2 = (p2[0]  ,p2[1] )
+    p3 = (p3[0]  ,p3[1] )
 
     # Dibujar triángulo base
     canvas.create_polygon(p1, p2, p3, fill=fill_color, outline=fill_color, smooth=True)
@@ -85,9 +85,9 @@ def draw_rounded_triangle(canvas, size,   angle=0,  fill_color="black", bg = "li
     return canvas 
 
 
-def draw_pause_icon(canvas, x, y, height, bar_width, fill_color="black", padx = 10, pady = 10):
+def draw_pause_icon(canvas, x, y, height, bar_width, fill_color="black"):
     """
-    Dibuja un ícono de pausa en un Canvas con padding.
+    Dibuja un ícono de pausa en un Canvas .
 
     Parámetros:
       - canvas: El objeto Canvas donde se dibujará.
@@ -99,30 +99,33 @@ def draw_pause_icon(canvas, x, y, height, bar_width, fill_color="black", padx = 
     """
     gap = bar_width  # Espacio entre las barras
 
-    # Aplicar padding a las coordenadas
-    x += padx
-    y += pady
-    padx + pady
-    height + 2 * pady    # Reducir la altura total por el padding
+   # Reducir la altura total por el padding
 
-    # Nuevas coordenadas con padding
+    # Nuevas coordenadas 
     x1 = x + gap
     x2 = x1 + bar_width
     y1, y2 = y, y + height
 
-    # Dibujar la primera barra con padding
+    # Dibujar la primera barra 
     canvas.create_rectangle(x1, y1, x2, y2, fill=fill_color, outline=fill_color)
 
-    # Dibujar la segunda barra con padding
+    # Dibujar la segunda barra 
     x3 = x2 + gap
     x4 = x3 + bar_width
     canvas.create_rectangle(x3, y1, x4, y2, fill=fill_color, outline=fill_color)
     
-    
-    
-    
+# Variables de control
+canvas_visible = True
 
-app = ttk.Window(themename="darkly")
+def changes_canvas(event):
+    """Alterna entre el canvas_play y el canvas_pause"""
+    global canvas_visible
+    
+    if canvas_visible:
+            boton_play.pack_forget()
+            boton_pause.pack()
+
+app = ttk.Window(themename = "darkly")
 
 
 # Crear la ventana
@@ -164,9 +167,23 @@ frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pad
 
 # Posicionar el boton play
 
-boton_play = draw_rounded_triangle(canvas = frame_audio, size=60, angle=90, bg=secundary_color, fill_color= primary_color, padx= 105.5, pady= 70)
+# Implementacion fisica del boton play 
 
-boton_pause = draw_pause_icon(frame_audio, 20, 20, 40, 10, padx= 100, pady = 70)
+canvas_play = tk.Canvas(frame_audio, width= 80, height= 80, highlightbackground = "white")
+draw_rounded_triangle(canvas = canvas_play, size=60, angle=90, bg=secundary_color, fill_color= primary_color)
+canvas_play.grid(row = 0, column=0, sticky="nw", padx= 40, pady = 40)
+canvas_play.config(bg=secundary_color)
+
+# Implementacion fisica del boton pause
+
+canvas_pause = tk.Canvas(frame_audio, width= 80, height= 80, bg=secundary_color, bd = 0, highlightbackground= "white")
+draw_pause_icon(canvas_pause, x = 20, y = 20, height= 40, bar_width= 10, fill_color= primary_color)
+canvas_pause.grid(row = 0, column= 1, sticky= "nw")
+canvas_pause.config(bg = secundary_color)
+
+
+
+
 
 
 app.mainloop()
