@@ -50,7 +50,7 @@ def rotate_point(x, y, cx, cy, angle):
     y_new = cy + (x - cx) * math.sin(rad) + (y - cy) * math.cos(rad)
     return x_new, y_new
 
-def draw_rounded_triangle(canvas, x, y, size, radius,   angle=0,  fill_color="black", bg = "lightblue", padx = 0, pady = 0 ):
+def draw_rounded_triangle(canvas, size,   angle=0,  fill_color="black", bg = "lightblue", padx = 0, pady = 0 ):
     """
     Dibuja un triángulo con bordes redondeados en un canvas.
     x, y -> Coordenadas del centro del triángulo.
@@ -85,6 +85,43 @@ def draw_rounded_triangle(canvas, x, y, size, radius,   angle=0,  fill_color="bl
     return canvas 
 
 
+def draw_pause_icon(canvas, x, y, height, bar_width, fill_color="black", padx = 10, pady = 10):
+    """
+    Dibuja un ícono de pausa en un Canvas con padding.
+
+    Parámetros:
+      - canvas: El objeto Canvas donde se dibujará.
+      - x, y: Coordenadas de la esquina superior izquierda del área donde se dibujará el ícono.
+      - height: Altura total del ícono.
+      - bar_width: Ancho de cada barra de pausa.
+      - fill_color: Color de las barras.
+      - padding: Espaciado alrededor del icono de pausa.
+    """
+    gap = bar_width  # Espacio entre las barras
+
+    # Aplicar padding a las coordenadas
+    x += padx
+    y += pady
+    padx + pady
+    height + 2 * pady    # Reducir la altura total por el padding
+
+    # Nuevas coordenadas con padding
+    x1 = x + gap
+    x2 = x1 + bar_width
+    y1, y2 = y, y + height
+
+    # Dibujar la primera barra con padding
+    canvas.create_rectangle(x1, y1, x2, y2, fill=fill_color, outline=fill_color)
+
+    # Dibujar la segunda barra con padding
+    x3 = x2 + gap
+    x4 = x3 + bar_width
+    canvas.create_rectangle(x3, y1, x4, y2, fill=fill_color, outline=fill_color)
+    
+    
+    
+    
+
 app = ttk.Window(themename="darkly")
 
 
@@ -93,8 +130,6 @@ app = ttk.Window(themename="darkly")
 app.title("Transcripcion beta, DvCami")
 app.geometry("1300x700+256+256")
 app.resizable(False,False)
-
-# Creacion de imagenes
 
 
 # Cuerpo de la ventana
@@ -129,7 +164,9 @@ frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pad
 
 # Posicionar el boton play
 
-boton_play = draw_rounded_triangle(canvas = frame_audio, x=30, y=30, size=60, radius=1, angle=90, bg=secundary_color, fill_color= primary_color, padx= 105.5, pady= 70)
+boton_play = draw_rounded_triangle(canvas = frame_audio, size=60, angle=90, bg=secundary_color, fill_color= primary_color, padx= 105.5, pady= 70)
+
+boton_pause = draw_pause_icon(frame_audio, 20, 20, 40, 10, padx= 100, pady = 70)
 
 
 app.mainloop()
