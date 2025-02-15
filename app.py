@@ -1,9 +1,10 @@
 import tkinter as tk
-import sys
 import math
+import os
 from tkinter import ttk
 import ttkbootstrap as ttk
-from tkinterdnd2 import TkinterDnD, DND_FILES
+import tkinterdnd2
+
 
 
 
@@ -19,13 +20,10 @@ from tkinterdnd2 import TkinterDnD, DND_FILES
     
 """
 
-
-
-
-
 # Colores 
 primary_color = "#424242"
 secundary_color = "#757575"
+text_color = "#808080"
 
 
 #Funciones
@@ -34,7 +32,21 @@ secundary_color = "#757575"
 
 def Exit(event):
     app.destroy()
-    sys.exit()
+
+
+def on_drop(event):
+    try:
+        files = app.tk.splitlist(event.data)
+        print(f"Archivo soltado;", files)
+        for f in files:
+            ext = os.path.splitext(f)[1].lower()
+            if ext in [".mp3", ".wav", ".ogg", ".flac"]:
+                print("Archivo de audio aceptado:", f)
+                # Aquí puedes agregar código para procesar el archivo
+            else:
+                print("El archivo no es audio:", f)
+    except Exception as e:
+        print("Error al capturar el archivo:", e)
 
 # Función para crear un frame con bordes redondeados
 def create_rounded_frame(master, width, height, radius=20, bg="lightblue"):
@@ -129,7 +141,6 @@ def changes_canvas(event):
     if canvas_visible:
             canvas_play.grid_forget()
             canvas_pause.grid(row= 0, column= 0, sticky= "nw", padx= 40, pady= 40)
-            
     else:
         canvas_pause.grid_forget()
         canvas_play.grid(row= 0, column= 0, sticky= "nw", padx= 40, pady= 40)
@@ -161,7 +172,19 @@ app.grid_rowconfigure(3, weight = 1)
 frame_drop = create_rounded_frame(master = app, width=300, height= 250, bg=primary_color)
 frame_drop.grid(row= 0, column=4, sticky = 'nsew', padx=10, pady=10) # Posicion del frame
 
-frame_drop.grid_propagate(False) # Evitar que el frame se expanda
+frame_drop.pack_propagate(False) # Evitar que el frame se expanda
+
+# Texto del frame drop
+style_label = ttk.Style()
+style_label.configure("TLabel", font=("Helvetica", 12) ,background = primary_color, foreground = text_color )
+
+label_drop = ttk.Label(frame_drop, text= "Drang and drop the audio", style = "TLabel")
+label_drop.pack(padx = 20, pady = 20)
+
+# Adaptando el DND
+frame_drop.drop_target_register(tkinterdnd2.DND_FILES)
+
+
 
 # Frame para elegir
 
@@ -173,8 +196,8 @@ frame_chose.grid_propagate(False) # Evitar que el frame se expanda
 
 # Frame de UI audio
 
-frame_audio = create_rounded_frame(master= app, width= 950, height= 200, bg=secundary_color)
-frame_audio.grid(row = 0,columnspan = 3, column = 1, sticky="nsew", padx=10, pady = 10 )
+frame_audio = create_rounded_frame(master= app, width= 950, height= 250, bg=secundary_color)
+frame_audio.grid(row = 0,columnspan = 3, column = 1, rowspan=3, sticky="nsew", padx=10, pady = 10 )
 
 # Posicionar el boton play
 
@@ -196,6 +219,8 @@ canvas_pause.config(bg = secundary_color)
 canvas_play.bind("<Button-1>", changes_canvas) # Poder pulsar el boton play
 canvas_pause.bind("<Button-1>", changes_canvas) # Poder pulsar el boton Pause
 app.bind("<Escape>", Exit) # Poder salir del programa
+
+frame_drop.bind("<<Drop>>", on_drop)
 
 
 
