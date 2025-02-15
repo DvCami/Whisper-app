@@ -1,5 +1,5 @@
-whisper
-pydub
-ttkbootstrap
-tkinterdnd2
-pygame
+whisper>=1.1.10
+pydub>=0.25.1
+ttkbootstrap>=1.10.1
+tkinterdnd2>=0.4.2
+pygame>=2.6.1
