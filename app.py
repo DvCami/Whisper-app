@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import PhotoImage
-from PIL import Image, ImageTk
+import sys
 import math
 from tkinter import ttk
 import ttkbootstrap as ttk
@@ -30,6 +29,12 @@ secundary_color = "#757575"
 
 
 #Funciones
+
+#Funcion de salida
+
+def Exit(event):
+    app.destroy()
+    sys.exit()
 
 # Función para crear un frame con bordes redondeados
 def create_rounded_frame(master, width, height, radius=20, bg="lightblue"):
@@ -122,8 +127,14 @@ def changes_canvas(event):
     global canvas_visible
     
     if canvas_visible:
-            boton_play.pack_forget()
-            boton_pause.pack()
+            canvas_play.grid_forget()
+            canvas_pause.grid(row= 0, column= 0, sticky= "nw", padx= 40, pady= 40)
+            
+    else:
+        canvas_pause.grid_forget()
+        canvas_play.grid(row= 0, column= 0, sticky= "nw", padx= 40, pady= 40)
+    
+    canvas_visible = not canvas_visible
 
 app = ttk.Window(themename = "darkly")
 
@@ -178,8 +189,13 @@ canvas_play.config(bg=secundary_color)
 
 canvas_pause = tk.Canvas(frame_audio, width= 80, height= 80, bg=secundary_color, bd = 0, highlightbackground= "white")
 draw_pause_icon(canvas_pause, x = 20, y = 20, height= 40, bar_width= 10, fill_color= primary_color)
-canvas_pause.grid(row = 0, column= 1, sticky= "nw")
 canvas_pause.config(bg = secundary_color)
+
+# asignacion de botones
+
+canvas_play.bind("<Button-1>", changes_canvas) # Poder pulsar el boton play
+canvas_pause.bind("<Button-1>", changes_canvas) # Poder pulsar el boton Pause
+app.bind("<Escape>", Exit) # Poder salir del programa
 
 
 
