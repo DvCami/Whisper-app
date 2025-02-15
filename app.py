@@ -3,7 +3,7 @@ import math
 import os
 from tkinter import ttk
 import ttkbootstrap as ttk
-import tkinterdnd2
+from PIL import Image, ImageTk
 
 
 
@@ -33,20 +33,6 @@ text_color = "#808080"
 def Exit(event):
     app.destroy()
 
-
-def on_drop(event):
-    try:
-        files = app.tk.splitlist(event.data)
-        print(f"Archivo soltado;", files)
-        for f in files:
-            ext = os.path.splitext(f)[1].lower()
-            if ext in [".mp3", ".wav", ".ogg", ".flac"]:
-                print("Archivo de audio aceptado:", f)
-                # Aquí puedes agregar código para procesar el archivo
-            else:
-                print("El archivo no es audio:", f)
-    except Exception as e:
-        print("Error al capturar el archivo:", e)
 
 # Función para crear un frame con bordes redondeados
 def create_rounded_frame(master, width, height, radius=20, bg="lightblue"):
@@ -101,7 +87,6 @@ def draw_rounded_triangle(canvas, size,   angle=0,  fill_color="black", bg = "li
 
     return canvas 
 
-
 def draw_pause_icon(canvas, x, y, height, bar_width, fill_color="black"):
     """
     Dibuja un ícono de pausa en un Canvas .
@@ -130,9 +115,6 @@ def draw_pause_icon(canvas, x, y, height, bar_width, fill_color="black"):
     x3 = x2 + gap
     x4 = x3 + bar_width
     canvas.create_rectangle(x3, y1, x4, y2, fill=fill_color, outline=fill_color)
-    
-# Variables de control
-canvas_visible = True
 
 def changes_canvas(event):
     """Alterna entre el canvas_play y el canvas_pause"""
@@ -147,6 +129,9 @@ def changes_canvas(event):
     
     canvas_visible = not canvas_visible
 
+# Variables de control
+canvas_visible = True
+
 app = ttk.Window(themename = "darkly")
 
 
@@ -155,6 +140,12 @@ app = ttk.Window(themename = "darkly")
 app.title("Transcripcion beta, DvCami")
 app.geometry("1300x700+256+256")
 app.resizable(False,False)
+
+# Carga de img 
+plus = Image.open("assets/imgs/plus.png")
+plus_resized = plus.resize((50, 50))
+plus_tk = ImageTk.PhotoImage(plus_resized)
+
 
 
 # Cuerpo de la ventana
@@ -181,10 +172,20 @@ style_label.configure("TLabel", font=("Helvetica", 12) ,background = primary_col
 label_drop = ttk.Label(frame_drop, text= "Drang and drop the audio", style = "TLabel")
 label_drop.pack(padx = 20, pady = 20)
 
-# Adaptando el DND
-frame_drop.drop_target_register(tkinterdnd2.DND_FILES)
+# Boton de abrir
+style = ttk.Style()
+style.configure("Link.TButton", relief="flat", borderwidth=0, background = primary_color)
+style.map("Link.TButton",
+    foreground=[('pressed', 'black'), ('active', 'black')],
+    background=[('pressed', '!focus', primary_color), ('active', primary_color)]
+)
 
 
+btn_open = ttk.Button(frame_drop, style= "Link.TButton")
+btn_open.config(image=plus_tk, compound="center", )
+btn_open.image = plus_tk
+btn_open.pack(padx= 10, pady= 10)
+print(plus.size)
 
 # Frame para elegir
 
@@ -199,7 +200,7 @@ frame_chose.grid_propagate(False) # Evitar que el frame se expanda
 frame_audio = create_rounded_frame(master= app, width= 950, height= 250, bg=secundary_color)
 frame_audio.grid(row = 0,columnspan = 3, column = 1, rowspan=3, sticky="nsew", padx=10, pady = 10 )
 
-# Posicionar el boton play
+
 
 # Implementacion fisica del boton play 
 
@@ -219,8 +220,6 @@ canvas_pause.config(bg = secundary_color)
 canvas_play.bind("<Button-1>", changes_canvas) # Poder pulsar el boton play
 canvas_pause.bind("<Button-1>", changes_canvas) # Poder pulsar el boton Pause
 app.bind("<Escape>", Exit) # Poder salir del programa
-
-frame_drop.bind("<<Drop>>", on_drop)
 
 
 
